@@ -33,11 +33,19 @@ browser.submit_selected()
 
 browser.open(url + "Controlador?command=AlunoHistorico")
 
+# Armazena a página web em uma variável
+
+page = browser.get_current_page()
+
+# Remove as tags span
+
+for span in page.find_all("span"):
+	span.decompose()
+
 # Encontra a tabela de Disciplinas
+table = page.find("tbody")
 
-table = browser.page.find(class_="table table-bordered table-condensed")
-
-# Remove as tags da tabela
+# Remove as tags da tabela e deixa apenas os textos
 
 table = re.sub('<[^>]*>', '', str(table))
 
@@ -49,5 +57,14 @@ table = table.split("\n")
 
 table = [s.strip() for s in table if not s.isspace() and s != ""]
 
-print(table)
+# Transforma os elementos desestruturados em tuplas
+
+table = zip(*[iter(table)]*8)
+
+# Transforma as tuplas da tabela em objetos da classe Disciplina
+
+disciplinas = [Disciplina(*t) for t in table]
+
+for disc in disciplinas:
+	print(disc)
 
