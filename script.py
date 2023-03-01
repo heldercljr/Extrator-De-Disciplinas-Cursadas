@@ -1,5 +1,6 @@
 import mechanicalsoup
 import re
+import csv
 
 from disciplina import Disciplina
 
@@ -43,28 +44,24 @@ for span in page.find_all("span"):
 	span.decompose()
 
 # Encontra a tabela de Disciplinas
-table = page.find("tbody")
+tabela = page.find("tbody")
 
 # Remove as tags da tabela e deixa apenas os textos
 
-table = re.sub('<[^>]*>', '', str(table))
+tabela = re.sub('<[^>]*>', '', str(tabela))
 
 # Transforma a tabela que antes era uma string em uma lista
 
-table = table.split("\n")
+tabela = tabela.split("\n")
 
 # Remove caracteres desnecessários da tabela
 
-table = [s.strip() for s in table if not s.isspace() and s != ""]
+tabela = [s.strip() for s in tabela if not s.isspace() and s != ""]
 
 # Transforma os elementos desestruturados em tuplas
 
-table = zip(*[iter(table)]*8)
+tabela = zip(*[iter(tabela)]*8)
 
 # Transforma as tuplas da tabela em objetos da classe Disciplina
 
-disciplinas = [Disciplina(*t) for t in table]
-
-for disc in disciplinas:
-	print(disc)
-
+disciplinas = [Disciplina(*t) for t in tabela]
