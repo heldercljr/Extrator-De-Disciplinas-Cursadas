@@ -18,8 +18,8 @@ browser.select_form()
 
 # Matrícula antiga da UFCG
 
-login = "118210158"
-senha = "helder.cpp2019"
+login = input("Digite seu número de matrícula: ")
+senha = input("Digite sua senha: ")
 comando = "AlunoLogin"
 
 browser["login"] = login
@@ -41,7 +41,7 @@ page = browser.get_current_page()
 # Remove as tags span
 
 for span in page.find_all("span"):
-	span.decompose()
+    span.decompose()
 
 # Encontra a tabela de Disciplinas
 tabela = page.find("tbody")
@@ -65,3 +65,38 @@ tabela = zip(*[iter(tabela)]*8)
 # Transforma as tuplas da tabela em objetos da classe Disciplina
 
 disciplinas = [Disciplina(*t) for t in tabela]
+
+# Abertura do arquivo .csv a ser exportado
+
+with open("disciplinas.csv", mode="w", newline="", encoding="utf-8") as arquivo_csv:
+
+    # Criação do escritor CSV
+
+    escritor = csv.writer(arquivo_csv, delimiter=",",
+                          quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+    # Criação do cabeçalho do arquivo .csv
+
+    cabecalho = ['Código', 'Nome', 'Tipo', 'Créditos',
+                 'Carga Horária', 'Média', 'Situação', 'Período']
+
+    # Escrita do cabeçalho
+
+    escritor.writerow(cabecalho)
+
+    # Linhas do arquivo a serem escritas
+
+    linhas = [[
+        disciplina.codigo,
+        disciplina.nome,
+        disciplina.tipo,
+        disciplina.creditos,
+        disciplina.carga_horaria,
+        disciplina.media,
+        disciplina.situacao,
+        disciplina.periodo
+    ] for disciplina in disciplinas]
+
+    # Escrita das linhas
+
+    escritor.writerows(linhas)
