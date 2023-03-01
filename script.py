@@ -4,11 +4,17 @@ import csv
 
 from disciplina import Disciplina
 
+# Identificação do User Agent do navegador
+
 user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
 
 browser = mechanicalsoup.StatefulBrowser(user_agent=user_agent)
 
+# URL do Controle Acadêmico
+
 url = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/"
+
+# Abertura da URL
 
 browser.open(url)
 
