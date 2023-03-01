@@ -16,7 +16,7 @@ browser.open(url)
 
 browser.select_form()
 
-# Matrícula antiga da UFCG
+# Coleta dos dados de matrícula do aluno
 
 login = input("Digite seu número de matrícula: ")
 senha = input("Digite sua senha: ")
@@ -34,16 +34,17 @@ browser.submit_selected()
 
 browser.open(url + "Controlador?command=AlunoHistorico")
 
-# Armazena a página web em uma variável
+# Armazenamento da página web em uma variável
 
 page = browser.get_current_page()
 
-# Remove as tags span
+# Remoção das tags span
 
 for span in page.find_all("span"):
     span.decompose()
 
 # Encontra a tabela de Disciplinas
+
 tabela = page.find("tbody")
 
 # Remove as tags da tabela e deixa apenas os textos
@@ -86,16 +87,8 @@ with open("disciplinas.csv", mode="w", newline="", encoding="utf-8") as arquivo_
 
     # Linhas do arquivo a serem escritas
 
-    linhas = [[
-        disciplina.codigo,
-        disciplina.nome,
-        disciplina.tipo,
-        disciplina.creditos,
-        disciplina.carga_horaria,
-        disciplina.media,
-        disciplina.situacao,
-        disciplina.periodo
-    ] for disciplina in disciplinas]
+    linhas = [[disciplina.codigo, disciplina.nome, disciplina.tipo, disciplina.creditos, disciplina.carga_horaria,
+               disciplina.media, disciplina.situacao, disciplina.periodo] for disciplina in disciplinas]
 
     # Escrita das linhas
 
